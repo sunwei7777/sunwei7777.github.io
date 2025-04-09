@@ -5,7 +5,7 @@
     }
     return flag;
 }
-window.onload = function() {
+window.onload = function(pre) {
   var json = {
       "data": [{
               "src": "images/service.png"
