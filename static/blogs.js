@@ -1,11 +1,11 @@
 export default [{
 	type: 'person',
-	id: "",
-	name: "",
-	phone: "",
+	id: "1234",
+	name: "aaa",
+	phone: "手机号",
 	qq: '',
 	email: '',
 	weibo: '',
-
+	address: '',
 	url: ''
-}
+}]

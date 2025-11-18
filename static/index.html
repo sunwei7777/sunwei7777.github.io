@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>每日运势抽签</title>
+		<style>
+			/* 自定义样式补充 */
+			body {
+					font-family: 'Noto Serif SC', serif;
+			}
+
+			/* 响应式调整 */
+			@media (max-width: 768px) {
+					.container {
+							padding-left: 1rem;
+							padding-right: 1rem;
+					}
+					
+					#signContainer {
+							width: 8rem;
+							height: 10rem;
+					}
+			}
+
+			/* 打印样式 */
+			@media print {
+					.no-print {
+							display: none !important;
+					}
+					
+					body {
+							background: white !important;
+					}
+			}
+
+			/* 深色模式支持 */
+			@media (prefers-color-scheme: dark) {
+					.dark-mode-support {
+							background: #1a202c;
+							color: #e2e8f0;
+					}
+			}
+
+			/* 无障碍支持 */
+			@media (prefers-reduced-motion: reduce) {
+					* {
+							animation-duration: 0.01ms !important;
+							animation-iteration-count: 1 !important;
+							transition-duration: 0.01ms !important;
+					}
+			}
+		</style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&display=swap');
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+        }
+        
+        .glow {
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+				
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen font-['Noto_Serif_SC']">
+    <!-- 头部导航 -->
+    <header class="bg-white/80 backdrop-blur-sm shadow-sm py-4">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-800">
+                    <i class="fas fa-bolt text-yellow-500 mr-2"></i>
+                    每日运势签
+                </h1>
+                <div class="flex items-center space-x-4">
+                    <button id="settingsBtn" class="p-2 text-gray-600 hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-cog text-lg"></i>
+                    </button>
+                    <span id="currentDate" class="text-sm text-gray-500"></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主功能区域 -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto">
+            <!-- 状态显示区域 -->
+            <div id="statusArea" class="text-center mb-8">
+                <div id="welcomeMsg" class="bg-white rounded-2xl shadow-lg p-6 fade-in">
+                    <i class="fas fa-dove text-4xl text-indigo-500 mb-4"></i>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-2">每日运势抽签</h2>
+                    <p class="text-gray-600 mb-4">保持冷静客观的心态，点击抽签筒获取今日运势指引</p>
+                    <p class="text-sm text-gray-500">每天只能抽取一次，所得结果仅供参考</p>
+                </div>
+                
+                <div id="resultArea" class="hidden bg-white rounded-2xl shadow-lg p-6 fade-in">
+                        <div class="text-center mb-4">
+                            <i id="resultIcon" class="fas text-4xl mb-2"></i>
+                            <h3 id="resultTitle" class="text-xl font-semibold"></h3>
+                        </div>
+                        <div id="resultContent" class="text-gray-700 space-y-2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 抽签交互区域 -->
+            <div class="bg-white rounded-2xl shadow-xl p-8 text-center">
+                <div class="relative mb-6">
+                    <div id="signContainer" class="w-48 h-64 mx-auto bg-gradient-to-b from-amber-100 to-amber-200 rounded-lg border-4 border-amber-300 shadow-inner flex items-center justify-center">
+                        <div id="signContent" class="text-amber-800">
+                    <i class="fas fa-question text-4xl"></i>
+                </div>
+            </div>
+            
+            <!-- 控制按钮 -->
+            <div class="flex justify-center space-x-4 mt-6">
+                <button id="drawBtn" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-hand-point-up mr-2"></i>
+                    抽取今日运势
+                </button>
+                <button id="resetBtn" class="bg-gray-500 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+                    <i class="fas fa-redo mr-2"></i>
+                    重新抽签
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 设置面板 -->
+    <div id="settingsPanel" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">设置</h3>
+                <button id="closeSettings" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">运势类型</label>
+                    <select id="fortuneType" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="general">综合运势</option>
+                        <option value="career">事业运势</option>
+                        <option value="love">爱情运势</option>
+                        <option value="wealth">财运运势</option>
+                        <option value="health">健康运势</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="flex items-center">
+                        <input type="checkbox" id="vibration" class="mr-2" checked>
+                        <span class="text-sm text-gray-700">震动反馈</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-white/80 backdrop-blur-sm mt-12 py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-600 text-sm">仅供娱乐参考 • 保持积极心态</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
